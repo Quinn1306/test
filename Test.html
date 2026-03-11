@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>The Most Important Question 🏆</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #007A4D;
+    --gold: #FFB612;
+    --black: #0d0d0d;
+    --white: #f5f5f0;
+    --red: #e63030;
+    --nz-silver: #c0c0c0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  html, body {
+    background-color: var(--black);
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    font-family: 'Nunito', sans-serif;
+    overflow-x: hidden;
+    touch-action: manipulation;
+  }
+
+  /* ─── BACKGROUND ─── */
+  .bg {
+    position: fixed; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse at 15% 40%, #007A4D28 0%, transparent 55%),
+      radial-gradient(ellipse at 85% 20%, #FFB61218 0%, transparent 55%),
+      #0a0a0a;
+  }
+
+  /* ─── FLAG BARS ─── */
+  .flag-bar {
+    position: fixed; top: 0; left: 0; right: 0; height: 6px; z-index: 50;
+    background: linear-gradient(90deg,
+      #007A4D 0%,#007A4D 18%,
+      #FFB612 18%,#FFB612 36%,
+      #fff 36%,#fff 52%,
+      #000 52%,#000 64%,
+      #e63030 64%,#e63030 82%,
+      #00A3DD 82%,#00A3DD 100%);
+  }
+  .nz-bar {
+    position: fixed; bottom: 0; left: 0; right: 0; height: 6px; z-index: 50;
+    background: linear-gradient(90deg,
+      #00247D 0%,#00247D 33%,
+      #CC142B 33%,#CC142B 66%,
+      #000 66%,#000 100%);
+  }
+
+  /* ─── CORNER DECORATIONS ─── */
+  .corner-deco {
+    position: fixed; z-index: 2; pointer-events: none;
+    font-size: 1.8rem; opacity: 0.45;
+    animation: corner-pulse 3s ease-in-out infinite alternate;
+    line-height: 1.3;
+  }
+  .corner-deco.tl { top: 16px; left: 12px; }
+  .corner-deco.tr { top: 16px; right: 12px; text-align: right; }
+  .corner-deco.bl { bottom: 16px; left: 12px; }
+  .corner-deco.br { bottom: 16px; right: 12px; text-align: right; }
+  @keyframes corner-pulse {
+    from { transform: scale(1) rotate(-4deg); opacity: 0.35; }
+    to   { transform: scale(1.14) rotate(4deg); opacity: 0.6; }
+  }
+  .corner-deco.tr { animation-delay: 0.7s; }
+  .corner-deco.bl { animation-delay: 1.4s; }
+  .corner-deco.br { animation-delay: 2.1s; }
+
+  /* ═══════════════════════════════════════
+     WELCOME SCREEN
+  ═══════════════════════════════════════ */
+  #welcome-page {
+    position: relative; z-index: 3;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 3rem 1.5rem;
+    text-align: center;
+  }
+
+  .welcome-sun {
+    font-size: 5rem;
+    display: block;
+    margin-bottom: 1rem;
+    animation: sun-spin 6s linear infinite;
+    filter: drop-shadow(0 0 20px #FFB61270);
+  }
+  @keyframes sun-spin {
+    0%,100% { transform: rotate(-8deg) scale(1); }
+    50% { transform: rotate(8deg) scale(1.1); }
+  }
+
+  .welcome-card {
+    background: linear-gradient(145deg, #1a1a1a, #252525);
+    border: 2px solid var(--gold);
+    border-radius: 28px;
+    padding: 2.4rem 2rem 2rem;
+    max-width: 420px;
+    width: 100%;
+    box-shadow: 0 0 60px #FFB61220, 0 20px 60px #00000090;
+    position: relative;
+  }
+  .welcome-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 5px;
+    border-radius: 28px 28px 0 0;
+    background: linear-gradient(90deg, transparent, var(--gold), #fff, var(--gold), transparent);
+  }
+
+  .welcome-greeting {
+    font-family: 'Bebas Neue', cursive;
+    letter-spacing: 3px;
+    color: var(--gold);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    opacity: 0.75;
+  }
+
+  .welcome-title {
+    font-family: 'Bebas Neue', cursive;
+    font-size: clamp(2rem, 9vw, 3rem);
+    color: var(--white);
+    line-height: 1.1;
+    margin-bottom: 1.4rem;
+  }
+  .welcome-title .highlight { color: var(--gold); display: block; }
+
+  .welcome-flags {
+    display: flex; justify-content: center; gap: 0.7rem;
+    font-size: 2rem; margin-bottom: 1.8rem;
+  }
+
+  .welcome-sub {
+    font-size: 0.85rem;
+    color: #555;
+    letter-spacing: 2px;
+    margin-bottom: 2rem;
+    font-family: 'Bebas Neue', cursive;
+  }
+
+  .continue-btn {
+    font-family: 'Bebas Neue', cursive;
+    letter-spacing: 4px;
+    font-size: 1.3rem;
+    padding: 0.85em 3em;
+    background: linear-gradient(135deg, #00c874, var(--green));
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 6px 30px #007A4D66;
+    transition: transform 0.2s, box-shadow 0.2s;
+    width: 100%;
+    max-width: 280px;
+  }
+  .continue-btn:active { transform: scale(0.97); }
+
+  /* ═══════════════════════════════════════
+     MAIN QUIZ PAGE
+  ═══════════════════════════════════════ */
+  #main-page {
+    display: none;
+    position: relative; z-index: 3;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 3.5rem 1rem 3rem;
+    text-align: center;
+  }
+
+  .trophy-gif {
+    font-size: 4rem; margin-bottom: 0.4rem;
+    animation: float 3s ease-in-out infinite;
+    display: block;
+    filter: drop-shadow(0 0 16px #FFB61270);
+  }
+  @keyframes float {
+    0%,100% { transform: translateY(0) rotate(-2deg); }
+    50% { transform: translateY(-12px) rotate(2deg); }
+  }
+
+  .versus-strip {
+    display: flex; align-items: center; gap: 1rem;
+    margin-bottom: 1.2rem; font-size: 1.8rem;
+  }
+  .vs-label {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 0.8rem; color: #555;
+    letter-spacing: 4px; padding: 0.3em 0.8em;
+    border: 1px solid #333; border-radius: 20px;
+  }
+
+  /* ─── QUESTION CARD ─── */
+  .question-card {
+    background: linear-gradient(145deg, #1a1a1a 0%, #252525 60%, #1a1a1a 100%);
+    border: 2px solid var(--gold);
+    border-radius: 24px;
+    padding: 2rem 1.5rem 1.6rem;
+    max-width: 420px; width: 100%;
+    box-shadow: 0 0 60px #FFB61218, 0 20px 60px #00000090;
+    position: relative;
+  }
+  .question-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 5px;
+    border-radius: 24px 24px 0 0;
+    background: linear-gradient(90deg, transparent, var(--gold), #fff, var(--gold), transparent);
+  }
+
+  .nation-badges {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 1.2rem; gap: 0.8rem;
+  }
+  .badge { display: flex; flex-direction: column; align-items: center; gap: 0.25rem; flex: 1; }
+  .badge-flag { font-size: 2rem; }
+  .badge-label {
+    font-family: 'Bebas Neue', cursive;
+    letter-spacing: 2px; font-size: 0.65rem; opacity: 0.65;
+  }
+  .badge.sa .badge-label { color: var(--gold); }
+  .badge.nz .badge-label { color: var(--nz-silver); }
+  .vs-circle {
+    font-family: 'Bebas Neue', cursive; font-size: 1.3rem; color: var(--red);
+    background: #1e1e1e; border: 2px solid #333; border-radius: 50%;
+    width: 46px; height: 46px; display: flex; align-items: center; justify-content: center;
+    letter-spacing: 2px; flex-shrink: 0;
+  }
+
+  .subtitle {
+    font-family: 'Bebas Neue', cursive;
+    letter-spacing: 4px; color: var(--gold);
+    font-size: 0.78rem; margin-bottom: 0.6rem; opacity: 0.75;
+  }
+
+  .question {
+    font-family: 'Bebas Neue', cursive;
+    font-size: clamp(1.7rem, 7vw, 2.8rem);
+    color: var(--white); line-height: 1.15;
+    margin-bottom: 1.6rem;
+    text-shadow: 0 2px 20px #00000080;
+  }
+  .question span { color: var(--gold); display: block; }
+
+  /* Stats strip */
+  .score-banner {
+    display: flex; justify-content: center; gap: 0.5rem;
+    align-items: center; margin-bottom: 1.4rem; flex-wrap: wrap;
+  }
+  .score-item {
+    background: #111; border: 1px solid #2a2a2a;
+    border-radius: 8px; padding: 0.3rem 0.8rem;
+    font-size: 0.72rem; color: #aaa; font-weight: 700;
+  }
+  .score-item.sa { border-color: #FFB61240; color: var(--gold); }
+  .score-item.nz { border-color: #ffffff20; color: #ccc; }
+
+  /* ─── BUTTONS ─── */
+  #btn-area {
+    display: flex; gap: 1.2rem;
+    justify-content: center; align-items: center;
+    flex-wrap: wrap; position: relative; min-height: 70px;
+  }
+
+  .btn {
+    font-family: 'Bebas Neue', cursive;
+    letter-spacing: 3px; font-size: 1.3rem;
+    padding: 0.8em 2.2em; border: none;
+    border-radius: 50px; cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s, font-size 0.4s ease, padding 0.4s ease;
+    position: relative; z-index: 10;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    min-height: 52px;
+  }
+  #yes-btn {
+    background: linear-gradient(135deg, #00c874, var(--green));
+    color: #fff; box-shadow: 0 6px 24px #007A4D66;
+  }
+  #yes-btn:active { transform: scale(0.97); }
+  #no-btn {
+    background: linear-gradient(135deg, #ff6666, var(--red));
+    color: #fff; box-shadow: 0 6px 24px #e6303066;
+  }
+  #no-btn:active { transform: scale(0.97); }
+
+  /* Moving positions */
+  #no-btn.move-left {
+    position: fixed !important; left: 12px !important; top: 50% !important;
+    right: auto !important; bottom: auto !important;
+    transform: translateY(-50%) !important;
+    transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  }
+  #no-btn.move-top {
+    position: fixed !important; top: 14px !important; left: 50% !important;
+    right: auto !important; bottom: auto !important;
+    transform: translateX(-50%) !important;
+    transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  }
+  #no-btn.move-right {
+    position: fixed !important; right: 12px !important; top: 50% !important;
+    left: auto !important; bottom: auto !important;
+    transform: translateY(-50%) !important;
+    transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  }
+  #no-btn.move-tiny {
+    position: static !important; transform: none !important;
+    transition: all 0.6s ease !important;
+  }
+
+  .hint {
+    font-size: 0.78rem; color: #555;
+    margin-top: 1rem; letter-spacing: 1px; min-height: 1.1em;
+    padding: 0 0.5rem;
+  }
+
+  .bottom-nations {
+    margin-top: 1.2rem;
+    display: flex; gap: 0.6rem; align-items: center;
+    justify-content: center; font-size: 0.7rem;
+    color: #3a3a3a; letter-spacing: 2px;
+    font-family: 'Bebas Neue', cursive;
+  }
+  .bottom-nations span { font-size: 1rem; }
+
+  /* ═══════════════════════════════════════
+     POPUPS (shared base)
+  ═══════════════════════════════════════ */
+  .overlay {
+    display: none;
+    position: fixed; inset: 0; z-index: 500;
+    background: #000000d0;
+    align-items: center; justify-content: center;
+    backdrop-filter: blur(8px);
+    padding: 1.5rem;
+  }
+  .overlay.show { display: flex; }
+
+  .popup-box {
+    border-radius: 24px;
+    padding: 2.4rem 2rem 2rem;
+    text-align: center; max-width: 360px; width: 100%;
+    position: relative; overflow: hidden;
+    animation: pop-in 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes pop-in {
+    0%   { transform: scale(0.4) rotate(-10deg); opacity: 0; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+  .popup-box::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  }
+
+  /* ─── ANGRY POPUP (after click 3) ─── */
+  #angry-overlay .popup-box {
+    background: linear-gradient(135deg, #1a0500, #2e0a00);
+    border: 3px solid #ff6600;
+    box-shadow: 0 0 80px #ff660060, 0 20px 60px #00000090;
+  }
+  #angry-overlay .popup-box::before {
+    background: linear-gradient(90deg, transparent, #ff6600, #ffaa44, #ff6600, transparent);
+  }
+
+  .angry-icon {
+    font-size: 4.5rem; display: block; margin-bottom: 0.5rem;
+    animation: shake 0.4s ease infinite alternate;
+  }
+  @keyframes shake {
+    from { transform: rotate(-12deg) scale(1); }
+    to   { transform: rotate(12deg) scale(1.15); }
+  }
+
+  .angry-title {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 2.8rem; color: #ff6600;
+    letter-spacing: 5px;
+    text-shadow: 0 0 30px #ff660080;
+    margin-bottom: 0.3rem;
+  }
+  .angry-msg {
+    font-size: 1.1rem; color: #fff; font-weight: 900; margin-bottom: 0.4rem;
+  }
+  .angry-msg span { color: #ff9944; }
+  .angry-sub { font-size: 0.85rem; color: #777; margin-bottom: 1.6rem; }
+
+  .angry-ok {
+    font-family: 'Bebas Neue', cursive;
+    letter-spacing: 3px; font-size: 1.1rem;
+    padding: 0.7em 2.5em; background: #ff6600;
+    color: #fff; border: none; border-radius: 50px;
+    cursor: pointer; box-shadow: 0 6px 20px #ff660060;
+    transition: transform 0.2s;
+    touch-action: manipulation; width: 100%;
+  }
+  .angry-ok:active { transform: scale(0.97); }
+
+  /* ─── NAUGHTY POPUP (after click 7) ─── */
+  #naughty-overlay .popup-box {
+    background: linear-gradient(135deg, #1a0000, #2e0606);
+    border: 3px solid var(--red);
+    box-shadow: 0 0 80px #e6303060, 0 20px 60px #00000090;
+  }
+  #naughty-overlay .popup-box::before {
+    background: linear-gradient(90deg, transparent, var(--red), #ff9999, var(--red), transparent);
+  }
+
+  .naughty-icon {
+    font-size: 4.5rem; display: block; margin-bottom: 0.5rem;
+    animation: wiggle 0.5s ease infinite alternate;
+  }
+  @keyframes wiggle {
+    from { transform: rotate(-12deg) scale(1); }
+    to   { transform: rotate(12deg) scale(1.12); }
+  }
+
+  .naughty-title {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 3rem; color: var(--red);
+    letter-spacing: 5px;
+    text-shadow: 0 0 30px #e6303080;
+    margin-bottom: 0.3rem;
+  }
+  .naughty-emojis {
+    font-size: 1.5rem; margin-bottom: 0.7rem;
+    display: flex; gap: 0.3rem; justify-content: center; flex-wrap: wrap;
+  }
+  .naughty-msg {
+    font-size: 1.1rem; color: #fff; font-weight: 900; margin-bottom: 0.4rem;
+  }
+  .naughty-msg span { color: var(--gold); }
+  .naughty-sub { font-size: 0.85rem; color: #777; margin-bottom: 1.6rem; }
+
+  .naughty-ok {
+    font-family: 'Bebas Neue', cursive;
+    letter-spacing: 3px; font-size: 1.1rem;
+    padding: 0.7em 2.5em; background: var(--red);
+    color: #fff; border: none; border-radius: 50px;
+    cursor: pointer; box-shadow: 0 6px 20px #e6303060;
+    transition: transform 0.2s;
+    touch-action: manipulation; width: 100%;
+  }
+  .naughty-ok:active { transform: scale(0.97); }
+
+  /* ═══════════════════════════════════════
+     CONGRATS PAGE
+  ═══════════════════════════════════════ */
+  #congrats-page {
+    display: none;
+    position: fixed; inset: 0; z-index: 200;
+    background: linear-gradient(160deg, #051a0e 0%, #003d20 45%, #001a0a 100%);
+    align-items: center; justify-content: center; flex-direction: column;
+    text-align: center; padding: 2.5rem 1.5rem;
+    overflow-y: auto;
+  }
+  .confetti-container { position: fixed; inset: 0; pointer-events: none; z-index: 201; }
+  .confetti-piece {
+    position: absolute; opacity: 0;
+    animation: confetti-fall 3.5s ease-in forwards;
+  }
+  @keyframes confetti-fall {
+    0%   { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  }
+
+  .congrats-flags { display: flex; gap: 0.8rem; margin-bottom: 0.5rem; font-size: 2.5rem; }
+  .congrats-emoji {
+    font-size: 5.5rem; animation: bounce-big 0.8s ease infinite alternate;
+    display: block; margin-bottom: 0.5rem;
+    filter: drop-shadow(0 0 30px #FFB61280);
+  }
+  @keyframes bounce-big {
+    from { transform: scale(1) rotate(-4deg); }
+    to   { transform: scale(1.14) rotate(4deg); }
+  }
+  .congrats-title {
+    font-family: 'Bebas Neue', cursive;
+    font-size: clamp(2.5rem, 12vw, 5.5rem); color: var(--gold);
+    text-shadow: 0 0 50px #FFB61280, 0 4px 0 #000;
+    letter-spacing: 5px; line-height: 1; margin-bottom: 0.3rem;
+  }
+  .congrats-sub {
+    font-family: 'Bebas Neue', cursive;
+    font-size: clamp(1rem, 4vw, 1.7rem); color: #fff;
+    letter-spacing: 3px; margin-bottom: 1.4rem; opacity: 0.8;
+    padding: 0 0.5rem;
+  }
+  .congrats-facts {
+    display: flex; gap: 0.8rem; flex-wrap: wrap;
+    justify-content: center; margin-bottom: 1.4rem;
+  }
+  .fact-chip {
+    background: #FFB61215; border: 1px solid var(--gold);
+    border-radius: 50px; padding: 0.4rem 1rem;
+    color: var(--gold); font-weight: 700; font-size: 0.82rem;
+  }
+  .congrats-gifs {
+    font-size: 3rem; display: flex; gap: 0.8rem; flex-wrap: wrap;
+    justify-content: center; margin-bottom: 1.4rem;
+  }
+  .cg { animation: spin-slow 4s linear infinite; display: inline-block; }
+  .cg:nth-child(even) { animation-direction: reverse; }
+  @keyframes spin-slow {
+    0%,100% { transform: rotate(-8deg) scale(1); }
+    50% { transform: rotate(8deg) scale(1.1); }
+  }
+  .play-again {
+    font-family: 'Bebas Neue', cursive; letter-spacing: 3px; font-size: 1.1rem;
+    padding: 0.85em 2.5em; background: var(--gold); color: #000;
+    border: none; border-radius: 50px; cursor: pointer;
+    box-shadow: 0 6px 30px #FFB61266; transition: transform 0.2s;
+    touch-action: manipulation; min-height: 52px; width: 100%; max-width: 260px;
+  }
+  .play-again:active { transform: scale(0.97); }
+
+  /* ─── SPARKLE ─── */
+  .sparkle {
+    position: fixed; pointer-events: none; z-index: 400;
+    font-size: 1.4rem; animation: sparkle-up 0.9s ease-out forwards;
+  }
+  @keyframes sparkle-up {
+    0%   { transform: translateY(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-80px) scale(0.2); opacity: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="flag-bar"></div>
+<div class="nz-bar"></div>
+<div class="bg"></div>
+
+<!-- SA corners, NZ corners -->
+<div class="corner-deco tl">🦁<br>🇿🇦</div>
+<div class="corner-deco tr">🇳🇿<br>🌿</div>
+<div class="corner-deco bl">🏆<br>💛</div>
+<div class="corner-deco br">🥝<br>⚫</div>
+
+<!-- ═══════════════════════════════════════
+     WELCOME SCREEN
+═══════════════════════════════════════ -->
+<div id="welcome-page">
+  <span class="welcome-sun">☀️</span>
+
+  <div class="welcome-card">
+    <div class="welcome-greeting">⚡ A MESSAGE FOR YOU ⚡</div>
+
+    <div class="welcome-title">
+      Good Morning<span class="highlight">Gorgeous! 😍</span>
+    </div>
+
+    <div class="welcome-flags">
+      <span>🇿🇦</span><span>🏉</span><span>🦁</span><span>🏉</span><span>🇳🇿</span>
+    </div>
+
+    <p style="color:#ccc; font-size:1rem; font-weight:700; line-height:1.5; margin-bottom:1.6rem; padding:0 0.3rem;">
+      I hope you are well rested<br>and ready to be
+      <span style="color:var(--gold); font-family:'Bebas Neue',cursive; font-size:1.3rem; letter-spacing:2px;"> EDUCATED</span> 🎓
+    </p>
+
+    <div class="welcome-sub">🇿🇦 Springboks vs All Blacks 🇳🇿</div>
+
+    <button class="continue-btn" onclick="startQuiz()">Continue ➜</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     MAIN QUIZ PAGE
+═══════════════════════════════════════ -->
+<div id="main-page">
+
+  <span class="trophy-gif">🏆</span>
+
+  <div class="versus-strip">
+    <span>🇿🇦</span>
+    <span class="vs-label">VS</span>
+    <span>🇳🇿</span>
+  </div>
+
+  <div class="question-card">
+
+    <div class="nation-badges">
+      <div class="badge sa">
+        <div class="badge-flag">🦁</div>
+        <div class="badge-label">Springboks 🇿🇦</div>
+      </div>
+      <div class="vs-circle">VS</div>
+      <div class="badge nz">
+        <div class="badge-flag">🌿</div>
+        <div class="badge-label">All Blacks 🇳🇿</div>
+      </div>
+    </div>
+
+    <div class="subtitle">⚡ THE QUESTION OF THE CENTURY ⚡</div>
+
+    <div class="question">
+      Is South Africa<span>The Best Rugby Team</span>in the World? 🌍
+    </div>
+
+    <div class="score-banner">
+      <div class="score-item sa">🏆 SA — 4× World Champs</div>
+      <div class="score-item nz">⚫ NZ — 3× World Champs</div>
+    </div>
+
+    <div id="btn-area">
+      <button class="btn" id="yes-btn" onclick="goYes(event)">✅ YES!</button>
+      <button class="btn" id="no-btn" onclick="goNo(event)">❌ No</button>
+    </div>
+
+    <p class="hint" id="hint-text">Think carefully before you answer... 🤔</p>
+
+    <div class="bottom-nations">
+      <span>🇿🇦</span> Springboks &nbsp;·&nbsp; <span>🏉</span> &nbsp;·&nbsp; All Blacks <span>🇳🇿</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     ANGRY POPUP (after click 3)
+═══════════════════════════════════════ -->
+<div class="overlay" id="angry-overlay">
+  <div class="popup-box">
+    <span class="angry-icon">😡</span>
+    <div class="angry-title">FITTY!</div>
+    <div class="angry-msg">You are making me <span>ANGRY!</span> 🤬</div>
+    <div class="angry-sub">This is not a difficult question... the Boks have FOUR World Cups! 🏆🏆🏆🏆</div>
+    <button class="angry-ok" onclick="closeAngry()">Okay okay... 😅</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     NAUGHTY POPUP (after click 7)
+═══════════════════════════════════════ -->
+<div class="overlay" id="naughty-overlay">
+  <div class="popup-box">
+    <span class="naughty-icon">😤</span>
+    <div class="naughty-title">NAUGHTY!</div>
+    <div class="naughty-emojis">🇿🇦 🏆 🦁 ⚡ 🏉 😠 🌟</div>
+    <div class="naughty-msg">You have <span>ONE LAST CHANCE</span>, fitty! 👀</div>
+    <div class="naughty-sub">The Boks have 4 World Cups. Don't embarrass yourself now...</div>
+    <button class="naughty-ok" onclick="closeNaughty()">Fine... Let Me Think 😬</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     CONGRATS PAGE
+═══════════════════════════════════════ -->
+<div id="congrats-page">
+  <div class="confetti-container" id="confetti-container"></div>
+
+  <div class="congrats-flags"><span>🇿🇦</span><span>🏆</span><span>🇿🇦</span></div>
+  <div class="congrats-emoji">🏆</div>
+  <div class="congrats-title">CONGRATULATIONS!</div>
+  <div class="congrats-sub">You got the right answer! 🎉<br>Knew you'd come right!</div>
+
+  <div class="congrats-facts">
+    <div class="fact-chip">🏆 4× World Champions</div>
+    <div class="fact-chip">🌍 World Rugby #1</div>
+    <div class="fact-chip">🦁 The Springboks</div>
+    <div class="fact-chip">💚 South Africa 🇿🇦</div>
+    <div class="fact-chip">😤 Not the All Blacks</div>
+    <div class="fact-chip">🇳🇿 Sorry NZ 😅</div>
+  </div>
+
+  <div class="congrats-gifs">
+    <span class="cg">🇿🇦</span><span class="cg">🏉</span><span class="cg">🥳</span>
+    <span class="cg">🏆</span><span class="cg">🎊</span><span class="cg">🦁</span>
+    <span class="cg">💛</span><span class="cg">💚</span>
+  </div>
+
+  <button class="play-again" onclick="resetPage()">🔄 Ask Again</button>
+</div>
+
+<script>
+  let noCount = 0;
+  const yesBtn = document.getElementById('yes-btn');
+  const noBtn  = document.getElementById('no-btn');
+  const hint   = document.getElementById('hint-text');
+
+  const hints = [
+    "Are you sure about that? 🤔",
+    "Really?? Come on now... 😅",
+    "You're testing my patience... 😠",
+    "Oh running away are we? 😂",
+    "Running to the top won't save you! 🏃",
+    "The right side?? Really?? 😏",
+    "This is your LAST warning... 😤",
+    "...and it's gone. Only YES remains. 👀",
+  ];
+
+  function startQuiz() {
+    document.getElementById('welcome-page').style.display = 'none';
+    document.getElementById('main-page').style.display = 'flex';
+  }
+
+  function goYes(e) {
+    spawnSparkles(e);
+    setTimeout(() => {
+      document.getElementById('main-page').style.display = 'none';
+      document.getElementById('congrats-page').style.display = 'flex';
+      launchConfetti();
+    }, 200);
+  }
+
+  function goNo(e) {
+    noCount++;
+
+    // Grow yes button each time
+    const curYes = parseFloat(window.getComputedStyle(yesBtn).fontSize);
+    yesBtn.style.fontSize = (curYes + 4) + 'px';
+    yesBtn.style.padding = '0.8em ' + (2.2 + noCount * 0.3) + 'em';
+
+    if (noCount <= 3) {
+      const curNo = parseFloat(window.getComputedStyle(noBtn).fontSize);
+      noBtn.style.fontSize = Math.max(curNo - 3, 7) + 'px';
+      noBtn.style.padding = '0.6em 1.4em';
+      hint.textContent = hints[noCount - 1];
+      // Show ANGRY popup after 3rd click
+      if (noCount === 3) {
+        setTimeout(() => showAngry(), 150);
+      }
+
+    } else if (noCount === 4) {
+      noBtn.className = 'btn move-left';
+      noBtn.style.fontSize = '0.85rem';
+      hint.textContent = hints[3];
+
+    } else if (noCount === 5) {
+      noBtn.className = 'btn move-top';
+      noBtn.style.fontSize = '0.75rem';
+      hint.textContent = hints[4];
+
+    } else if (noCount === 6) {
+      noBtn.className = 'btn move-right';
+      noBtn.style.fontSize = '0.65rem';
+      hint.textContent = hints[5];
+
+    } else if (noCount === 7) {
+      noBtn.className = 'btn move-tiny';
+      noBtn.style.position = 'static';
+      noBtn.style.transform = 'none';
+      noBtn.style.fontSize = '0.5rem';
+      noBtn.style.padding = '0.4em 0.7em';
+      hint.textContent = hints[6];
+      setTimeout(() => showNaughty(), 150);
+
+    } else if (noCount >= 8) {
+      noBtn.style.transition = 'opacity 0.5s, transform 0.5s';
+      noBtn.style.opacity = '0';
+      noBtn.style.transform = 'scale(0) rotate(180deg)';
+      setTimeout(() => { noBtn.style.display = 'none'; }, 500);
+      hint.textContent = hints[7];
+      yesBtn.style.fontSize = '2.2rem';
+      yesBtn.style.padding = '0.9em 3.5em';
+    }
+  }
+
+  function showAngry()   { document.getElementById('angry-overlay').classList.add('show'); }
+  function closeAngry()  { document.getElementById('angry-overlay').classList.remove('show'); }
+  function showNaughty() { document.getElementById('naughty-overlay').classList.add('show'); }
+  function closeNaughty(){ document.getElementById('naughty-overlay').classList.remove('show'); }
+
+  function spawnSparkles(e) {
+    const emojis = ['✨','🌟','⭐','💫','🎉','🏆','💛','💚'];
+    for (let i = 0; i < 7; i++) {
+      setTimeout(() => {
+        const el = document.createElement('div');
+        el.className = 'sparkle';
+        el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        el.style.left = (20 + Math.random() * (window.innerWidth - 40)) + 'px';
+        el.style.top  = (60 + Math.random() * (window.innerHeight * 0.55)) + 'px';
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 1000);
+      }, i * 70);
+    }
+  }
+
+  function launchConfetti() {
+    const container = document.getElementById('confetti-container');
+    container.innerHTML = '';
+    const colors = ['#FFB612','#007A4D','#ffffff','#00cc66','#ffd700','#e63030','#00A3DD'];
+    const shapes = ['■','●','▲','★','♦'];
+
+    for (let i = 0; i < 120; i++) {
+      const el = document.createElement('div');
+      el.className = 'confetti-piece';
+      el.textContent = shapes[Math.floor(Math.random() * shapes.length)];
+      el.style.left = Math.random() * 100 + 'vw';
+      el.style.color = colors[Math.floor(Math.random() * colors.length)];
+      el.style.fontSize = (Math.random() * 14 + 7) + 'px';
+      el.style.animationDelay = (Math.random() * 3) + 's';
+      el.style.animationDuration = (Math.random() * 2 + 2) + 's';
+      container.appendChild(el);
+    }
+    setTimeout(launchConfetti, 4500);
+  }
+
+  function resetPage() {
+    noCount = 0;
+    noBtn.className = 'btn';
+    noBtn.style.cssText = '';
+    yesBtn.style.cssText = '';
+    hint.textContent = 'Think carefully before you answer... 🤔';
+    document.getElementById('congrats-page').style.display = 'none';
+    document.getElementById('welcome-page').style.display = 'flex';
+    document.getElementById('main-page').style.display = 'none';
+    document.getElementById('confetti-container').innerHTML = '';
+    document.getElementById('angry-overlay').classList.remove('show');
+    document.getElementById('naughty-overlay').classList.remove('show');
+  }
+</script>
+</body>
+</html>
